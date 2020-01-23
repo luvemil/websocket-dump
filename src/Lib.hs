@@ -5,8 +5,9 @@ module Lib
     )
 where
 
-import           Lib.App
 import           Control.Monad.Reader
+import           Lib.App
+import           Lib.Env
 
 -- Debug implementation of env loader
 loadEnv :: IO Env

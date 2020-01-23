@@ -2,19 +2,12 @@
 
 module Lib.App
     ( App
-    , Env(..)
     , runApp
     )
 where
 
 import           Control.Monad.Reader
-
-type Endpoint = String
-
-data Env
-    = Env
-    { endpoints :: [Endpoint]
-    }
+import           Lib.Env
 
 newtype App a
     = App
