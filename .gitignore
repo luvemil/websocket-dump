@@ -1,0 +1,5 @@
+.stack-work/
+websocket-dump.cabal
+.vscode/
+.devcontainer/
+*~
