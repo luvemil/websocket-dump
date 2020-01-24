@@ -28,6 +28,8 @@ dependencies:
   - websockets
   - wuss
   - mtl
+  - bytestring
+  - network
 
 library:
   source-dirs: src

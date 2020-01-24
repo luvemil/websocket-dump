@@ -8,18 +8,25 @@ where
 import           Control.Monad.Reader
 import           Lib.App
 import           Lib.Env
+import           Lib.WS.Runner                  ( WSOptions(..)
+                                                , runWithOptions
+                                                )
+import           Config
 
 -- Debug implementation of env loader
 loadEnv :: IO Env
-loadEnv = pure $ Env ["wss://echo.websocket.org"]
+loadEnv =
+    let config = krakenConfig
+        host   = "ws.kraken.com"
+        port   = 443
+        path   = "/"
+    in  pure . Env $ WSOptions { .. }
 
 -- Placeholder implementation of App
 dummyApp :: App ()
 dummyApp = do
     Env {..} <- ask
-    liftIO $ putStrLn "Endpoints:"
-    liftIO $ forM_ endpoints $ \e -> do
-        putStrLn $ " - " ++ e
+    liftIO $ runWithOptions wsOptions
 
 main :: IO ()
 main = loadEnv >>= \e -> runApp dummyApp e
