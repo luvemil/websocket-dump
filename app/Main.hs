@@ -1,6 +1,6 @@
 module Main where
 
-import qualified Lib
+import Lib
 
 main :: IO ()
-main = Lib.main
+main = loadEnv >>= runEnv

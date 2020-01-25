@@ -1,7 +1,8 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving, RecordWildCards #-}
 
 module Lib
-    ( main
+    ( loadEnv
+    , runEnv
     )
 where
 
@@ -23,10 +24,9 @@ loadEnv =
     in  pure . Env $ WSOptions { .. }
 
 -- Placeholder implementation of App
-dummyApp :: App ()
-dummyApp = do
-    Env {..} <- ask
-    liftIO $ runWithOptions wsOptions
-
-main :: IO ()
-main = loadEnv >>= \e -> runApp dummyApp e
+runEnv :: Env -> IO ()
+runEnv env = runApp app env
+  where
+    app = do
+        Env {..} <- ask
+        liftIO $ runWithOptions wsOptions
