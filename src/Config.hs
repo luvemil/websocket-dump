@@ -18,7 +18,11 @@ krakenConfig =
     let fstMsg :: BS.ByteString
         fstMsg = encode $ object
             [ "event" .= ("subscribe" :: Text)
-            , "pair" .= ["XBT/USD" :: Text]
+            , "pair" .= (
+                [ "XBT/USD"
+                , "ETH/USD"
+                , "XRP/USD"
+                ] :: [Text])
             , "subscription" .= object ["name" .= ("ticker" :: Text)]
             ]
         onOpen    = openConnection fstMsg
