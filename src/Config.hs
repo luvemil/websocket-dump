@@ -24,9 +24,8 @@ krakenConfig =
             , "subscription" .= object ["name" .= ("ticker" :: Text)]
             ]
         onOpen = openConnection fstMsg
-        onMessage conn = do
-            msg <- WS.receiveData conn
+        onMessage msg = do
             case (decodeTicker msg) of
                 Right t -> BS.putStrLn $ encode t
-                Left f -> pure ()
+                Left  f -> pure ()
     in  WSConfig { .. }
