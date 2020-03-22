@@ -1,4 +1,4 @@
-{-# LANGUAGE GeneralizedNewtypeDeriving, RecordWildCards #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving, RecordWildCards, TypeApplications #-}
 
 module Lib
     ( loadEnv
@@ -15,7 +15,7 @@ import           Lib.WS.Runner                  ( WSOptions(..)
 import           Config
 
 -- Debug implementation of env loader
-loadEnv :: IO Env
+loadEnv :: IO AppEnv
 loadEnv =
     let config = krakenConfig
         host   = "ws.kraken.com"
@@ -24,9 +24,9 @@ loadEnv =
     in  pure . Env $ WSOptions { .. }
 
 -- Placeholder implementation of App
-runEnv :: Env -> IO ()
+runEnv :: AppEnv -> IO ()
 runEnv env = runApp app env
   where
     app = do
-        Env {..} <- ask
+        wsOptions <- grab @WSOptions
         liftIO $ runWithOptions wsOptions
