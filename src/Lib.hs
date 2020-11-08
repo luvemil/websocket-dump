@@ -1,16 +1,14 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving, RecordWildCards, TypeApplications #-}
 
 module Lib
-    ( loadEnv
-    , runEnv
+    ( main
     )
 where
 
 import           Control.Monad.Reader
 import           Lib.App
-import           Lib.WS.Runner                  ( WSOptions(..)
-                                                , runWithOptions
-                                                )
+import           Lib.WS.Runner                  ( runWithOptions )
+import           Lib.WS.WSOptions
 import           Config
 import           System.Environment
 
@@ -20,7 +18,7 @@ loadEnv = do
     cwApiKeyMaybe <- lookupEnv "CW_API_KEY"
     case cwApiKeyMaybe of
         Just apiKey -> pure . Env $ cwOptions apiKey
-        Nothing -> fail "CW_API_KEY not found"
+        Nothing     -> fail "CW_API_KEY not found"
 
 -- Placeholder implementation of App
 runEnv :: AppEnv -> IO ()
@@ -29,3 +27,6 @@ runEnv env = runApp env app
     app = do
         wsOptions <- grab @WSOptions
         liftIO $ runWithOptions wsOptions
+
+main :: IO ()
+main = loadEnv >>= runEnv

@@ -7,7 +7,7 @@ import           Data.Aeson
 import           Data.Text
 import qualified Data.ByteString.Lazy.Char8    as BS
 import qualified Network.WebSockets            as WS
-import           Lib.WS.Runner
+import           Lib.WS.WSOptions
 import           Lib.WS.Actions
 
 import           Sources.Kraken.WS              ( decodeTicker )

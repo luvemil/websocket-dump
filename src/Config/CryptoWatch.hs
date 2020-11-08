@@ -2,8 +2,8 @@
 module Config.CryptoWatch where
 
 import qualified Data.ByteString.Lazy.Char8    as BS
-import           Lib.WS.Runner
 import           Lib.WS.Actions
+import           Lib.WS.WSOptions
 
 krakenSubscription :: BS.ByteString
 krakenSubscription =
@@ -11,14 +11,14 @@ krakenSubscription =
 
 cryptoWatchConfig :: WSConfig
 cryptoWatchConfig =
-    let onOpen = openConnection krakenSubscription
+    let onOpen    = openConnection krakenSubscription
         onMessage = BS.putStrLn
-    in WSConfig {..}
+    in  WSConfig { .. }
 
 cwOptions :: String -> WSOptions
-cwOptions apiKey = 
+cwOptions apiKey =
     let config = cryptoWatchConfig
-        host = "stream.cryptowat.ch"
-        port = 443
-        path = "/connect?apikey=" ++ apiKey
-    in WSOptions {..}
+        host   = "stream.cryptowat.ch"
+        port   = 443
+        path   = "/connect?apikey=" ++ apiKey
+    in  WSOptions { .. }

@@ -6,7 +6,7 @@ module Lib.App.Env
     )
 where
 
-import           Lib.WS.Runner                  ( WSOptions )
+import           Lib.WS.WSOptions               ( WSOptions )
 import           Data.Kind                      ( Type )
 import           Control.Monad.Reader           ( MonadReader
                                                 , ask
