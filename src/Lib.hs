@@ -24,9 +24,7 @@ loadEnv = do
 runEnv :: AppEnv -> IO ()
 runEnv env = runApp env app
   where
-    app = do
-        wsOptions <- grab @WSOptions
-        liftIO $ runWithOptions wsOptions
+    app = runWithOptions cryptoWatchConfig 
 
 main :: IO ()
 main = loadEnv >>= runEnv

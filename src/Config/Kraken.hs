@@ -8,6 +8,7 @@ import           Data.Text
 import qualified Data.ByteString.Lazy.Char8    as BS
 import qualified Network.WebSockets            as WS
 import           Lib.WS.WSOptions
+import           Lib.WS.WSConfig
 import           Lib.WS.Actions
 
 import           Sources.Kraken.WS              ( decodeTicker )
@@ -32,8 +33,7 @@ krakenConfig =
 
 krakenOptions :: WSOptions
 krakenOptions =
-    let config = krakenConfig
-        host = "ws.kraken.com"
+    let host = "ws.kraken.com"
         port = 443
         path = "/"
     in WSOptions {..}
