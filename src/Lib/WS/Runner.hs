@@ -5,24 +5,31 @@ import           Control.Concurrent             ( forkIO )
 import           Control.Monad                  ( forever )
 import           Wuss
 import qualified Network.WebSockets            as WS
+import           Network.Socket
 import           Lib.WS.WSConfig
 import           Lib.WS.WSOptions
 import           Lib.App
-import           Control.Monad.IO.Class         ( liftIO )
+import           UnliftIO
 
 -- Build WS.ClientApp ()
 
+runSecureClientUnlifted
+    :: MonadUnliftIO m => HostName -> PortNumber -> String -> (WS.Connection -> m a) -> m a
+runSecureClientUnlifted host port str inner =
+    withRunInIO $ \runInIO ->
+        runSecureClient host port str (runInIO . inner)
 
-runConfig :: WSConfig -> WS.ClientApp ()
+
+runConfig :: WSConfig -> (WS.Connection -> App ())
 runConfig WSConfig {..} conn = do
-    _ <- forkIO $ onOpen conn
-    forever $ WS.receiveData conn >>= onMessage
+    _ <- liftIO . forkIO $ onOpen conn
+    forever $ do
+        msg <- liftIO $ WS.receiveData conn
+        onMessage msg
 
 -- Out to IO ()
-
-
 runWithOptions :: WSConfig -> App ()
-runWithOptions actions = do
+runWithOptions config = do
     WSOptions {..} <- grab @WSOptions
-    liftIO $ runSecureClient host port path app
-    where app = runConfig actions
+    runSecureClientUnlifted host port path app
+    where app = runConfig config

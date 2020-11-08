@@ -12,6 +12,7 @@ import           Lib.WS.WSConfig
 import           Lib.WS.Actions
 
 import           Sources.Kraken.WS              ( decodeTicker )
+import           Control.Monad.IO.Class
 
 
 -- Kraken specific
@@ -25,10 +26,10 @@ krakenConfig =
             , "subscription" .= object ["name" .= ("ticker" :: Text)]
             ]
         onOpen = openConnection fstMsg
-        onMessage msg = do
-            case (decodeTicker msg) of
+        onMessage msg = liftIO $
+            case decodeTicker msg of
                 Right t -> BS.putStrLn $ encode t
-                Left  f -> pure ()
+                Left  _ -> pure ()
     in  WSConfig { .. }
 
 krakenOptions :: WSOptions
@@ -36,4 +37,4 @@ krakenOptions =
     let host = "ws.kraken.com"
         port = 443
         path = "/"
-    in WSOptions {..}
+    in  WSOptions { .. }
