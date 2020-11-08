@@ -1,21 +1,8 @@
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-
 module Lib.App
-    ( App
-    , runApp
-    , AppEnv
+    ( module Lib.App.Env
+    , module Lib.App.Monad
     )
 where
 
-import           Control.Monad.Reader
-import           Lib.Env
-
-type AppEnv = Env App
-
-newtype App a = App
-    { unApp :: ReaderT AppEnv IO a
-    } deriving (Functor, Applicative, Monad, MonadIO, MonadReader AppEnv)
-
-
-runApp :: App a -> AppEnv -> IO a
-runApp a env = runReaderT (unApp a) env
+import           Lib.App.Env
+import           Lib.App.Monad

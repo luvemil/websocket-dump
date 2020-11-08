@@ -8,7 +8,6 @@ where
 
 import           Control.Monad.Reader
 import           Lib.App
-import           Lib.Env
 import           Lib.WS.Runner                  ( WSOptions(..)
                                                 , runWithOptions
                                                 )
@@ -25,7 +24,7 @@ loadEnv =
 
 -- Placeholder implementation of App
 runEnv :: AppEnv -> IO ()
-runEnv env = runApp app env
+runEnv env = runApp env app
   where
     app = do
         wsOptions <- grab @WSOptions
