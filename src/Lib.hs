@@ -12,15 +12,15 @@ import           Lib.WS.Runner                  ( WSOptions(..)
                                                 , runWithOptions
                                                 )
 import           Config
+import           System.Environment
 
 -- Debug implementation of env loader
 loadEnv :: IO AppEnv
-loadEnv =
-    let config = krakenConfig
-        host   = "ws.kraken.com"
-        port   = 443
-        path   = "/"
-    in  pure . Env $ WSOptions { .. }
+loadEnv = do
+    cwApiKeyMaybe <- lookupEnv "CW_API_KEY"
+    case cwApiKeyMaybe of
+        Just apiKey -> pure . Env $ cwOptions apiKey
+        Nothing -> fail "CW_API_KEY not found"
 
 -- Placeholder implementation of App
 runEnv :: AppEnv -> IO ()

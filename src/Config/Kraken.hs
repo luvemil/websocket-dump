@@ -29,3 +29,11 @@ krakenConfig =
                 Right t -> BS.putStrLn $ encode t
                 Left  f -> pure ()
     in  WSConfig { .. }
+
+krakenOptions :: WSOptions
+krakenOptions =
+    let config = krakenConfig
+        host = "ws.kraken.com"
+        port = 443
+        path = "/"
+    in WSOptions {..}

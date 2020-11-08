@@ -18,7 +18,7 @@ cryptoWatchConfig =
 cwOptions :: String -> WSOptions
 cwOptions apiKey = 
     let config = cryptoWatchConfig
-        host = "wss://stream.cryptowat.ch"
+        host = "stream.cryptowat.ch"
         port = 443
         path = "/connect?apikey=" ++ apiKey
     in WSOptions {..}
